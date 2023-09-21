@@ -1,4 +1,4 @@
-package com.example.udemy_unitconverter_compose
+package com.example.udemy_unitconverter_compose.data
 
 data class Conversion(
 

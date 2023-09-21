@@ -1,6 +1,5 @@
-package com.example.udemy_unitconverter_compose
+package com.example.udemy_unitconverter_compose.compose
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +15,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import com.example.udemy_unitconverter_compose.data.Conversion
 
 
 @Composable
@@ -27,7 +26,6 @@ fun TopScreen_ConversionMenu(
     modifier: Modifier = Modifier,
     convert : ((Conversion) -> Unit)
 ) {
-    Log.d("MYTAG", conversionList.toString())
     var displayingText by remember { mutableStateOf("Selected Conversion Type : ") }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var isExpanded by remember { mutableStateOf(false) }
