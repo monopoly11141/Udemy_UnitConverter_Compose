@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -23,10 +24,11 @@ import com.example.udemy_unitconverter_compose.data.Conversion
 @Composable
 fun TopScreen_ConversionMenu(
     conversionList: List<Conversion>,
+    isLandscape : Boolean,
     modifier: Modifier = Modifier,
     convert : ((Conversion) -> Unit)
 ) {
-    var displayingText by remember { mutableStateOf("Selected Conversion Type : ") }
+    var displayingText by rememberSaveable { mutableStateOf("Selected Conversion Type : ") }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -37,36 +39,66 @@ fun TopScreen_ConversionMenu(
     }
 
     Column(
-
     ) {
-        OutlinedTextField(
-            value = displayingText,
-            onValueChange = { displayingText = it },
-            textStyle = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            label = {
-                Text(
-                    text = "Conversion type"
-                )
-            },
-            trailingIcon = {
-                Icon(
-                    icon,
-                    contentDescription = "icon",
-                    modifier.clickable {
-                        isExpanded = !isExpanded
+        if(isLandscape) {
+            OutlinedTextField(
+                value = displayingText,
+                onValueChange = { displayingText = it },
+                textStyle = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                label = {
+                    Text(
+                        text = "Conversion type"
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        icon,
+                        contentDescription = "icon",
+                        modifier.clickable {
+                            isExpanded = !isExpanded
+                        }
+                    )
+                },
+                readOnly = true,
+                modifier = modifier
+                    .onGloballyPositioned { coordinates ->
+                        textFieldSize = coordinates.size.toSize()
                     }
-                )
-            },
-            readOnly = true,
-            modifier = modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { coordinates ->
-                    textFieldSize = coordinates.size.toSize()
-                }
-        )
+            )
+        }else {
+            OutlinedTextField(
+                value = displayingText,
+                onValueChange = { displayingText = it },
+                textStyle = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                label = {
+                    Text(
+                        text = "Conversion type"
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        icon,
+                        contentDescription = "icon",
+                        modifier.clickable {
+                            isExpanded = !isExpanded
+                        }
+                    )
+                },
+                readOnly = true,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        textFieldSize = coordinates.size.toSize()
+                    }
+            )
+        }
+
 
         DropdownMenu(
             expanded = isExpanded,

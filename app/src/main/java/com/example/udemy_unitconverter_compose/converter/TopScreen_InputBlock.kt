@@ -22,72 +22,137 @@ import com.example.udemy_unitconverter_compose.data.Conversion
 fun TopScreen_InputBlock(
     conversion: Conversion,
     inputText: MutableState<String>,
+    isLandscape : Boolean,
     context: Context = LocalContext.current,
     modifier: Modifier = Modifier,
     calculate: (String) -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .padding(0.dp, 20.dp, 0.dp, 0.dp)
-    ) {
-        Row(
+    if(isLandscape) {
+        Column(
             modifier = modifier
-                .fillMaxWidth()
+                .padding(0.dp, 20.dp, 0.dp, 0.dp)
         ) {
-            TextField(
-                value = inputText.value,
-                onValueChange = {
-                    inputText.value = it
+            Row(
+                modifier = modifier
+            ) {
+                TextField(
+                    value = inputText.value,
+                    onValueChange = {
+                        inputText.value = it
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.None,
+                        autoCorrect = true,
+                        keyboardType = KeyboardType.Number
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(0.3F)
+                    ),
+                    textStyle = TextStyle(
+                        color = Color.DarkGray,
+                        fontSize = 30.sp
+                    ),
+                    modifier = modifier
+                )
+
+                Text(
+                    text = conversion.convertFrom,
+                    fontSize = 24.sp,
+                    modifier = modifier
+                        .padding(10.dp, 30.dp, 0.dp, 0.dp)
+                )
+            }
+
+            Spacer(
+                modifier = modifier
+                    .height(20.dp)
+            )
+
+            OutlinedButton(
+
+                onClick = {
+                    if (inputText.value.isNotEmpty()) {
+                        calculate(inputText.value)
+                    } else {
+                        Toast.makeText(context, "Please enter value", Toast.LENGTH_SHORT).show()
+                    }
                 },
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.None,
-                    autoCorrect = true,
-                    keyboardType = KeyboardType.Number
-                ),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = MaterialTheme.colorScheme.surface.copy(0.3F)
-                ),
-                textStyle = TextStyle(
-                    color = Color.DarkGray,
-                    fontSize = 30.sp
-                ),
                 modifier = modifier
-                    .fillMaxWidth(0.65F)
-            )
+            ) {
+                Text(
+                    text = "Convert",
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue
+                )
+            }
 
-            Text(
-                text = conversion.convertFrom,
-                fontSize = 24.sp,
-                modifier = modifier
-                    .padding(10.dp, 30.dp, 0.dp, 0.dp)
-                    .fillMaxWidth(0.35F)
-            )
         }
-
-        Spacer(
+    }else {
+        Column(
             modifier = modifier
-                .height(20.dp)
-        )
-
-        OutlinedButton(
-
-            onClick = {
-                if (inputText.value.isNotEmpty()) {
-                    calculate(inputText.value)
-                } else {
-                    Toast.makeText(context, "Please enter value", Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = modifier
-                .fillMaxWidth()
+                .padding(0.dp, 20.dp, 0.dp, 0.dp)
         ) {
-            Text(
-                text = "Convert",
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Blue
-            )
-        }
+            Row(
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
+                TextField(
+                    value = inputText.value,
+                    onValueChange = {
+                        inputText.value = it
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.None,
+                        autoCorrect = true,
+                        keyboardType = KeyboardType.Number
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(0.3F)
+                    ),
+                    textStyle = TextStyle(
+                        color = Color.DarkGray,
+                        fontSize = 30.sp
+                    ),
+                    modifier = modifier
+                        .fillMaxWidth(0.65F)
+                )
 
+                Text(
+                    text = conversion.convertFrom,
+                    fontSize = 24.sp,
+                    modifier = modifier
+                        .padding(10.dp, 30.dp, 0.dp, 0.dp)
+                        .fillMaxWidth(0.35F)
+                )
+            }
+
+            Spacer(
+                modifier = modifier
+                    .height(20.dp)
+            )
+
+            OutlinedButton(
+
+                onClick = {
+                    if (inputText.value.isNotEmpty()) {
+                        calculate(inputText.value)
+                    } else {
+                        Toast.makeText(context, "Please enter value", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                modifier = modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Convert",
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue
+                )
+            }
+
+        }
     }
+
 }

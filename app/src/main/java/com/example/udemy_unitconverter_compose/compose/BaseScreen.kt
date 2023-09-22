@@ -1,12 +1,10 @@
 package com.example.udemy_unitconverter_compose.compose
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.udemy_unitconverter_compose.ConverterViewModel
@@ -23,20 +21,66 @@ fun BaseScreen(
     val converterList = converterViewModel.getConversions()
     val historyList = converterViewModel.resultList.collectAsState(initial = emptyList())
 
-    Column(
-        modifier = Modifier
-            .padding(30.dp)
-    ) {
-        TopScreen(converterList) { message1, message2 ->
-            converterViewModel.addResult(message1, message2)
+    val configuration = LocalConfiguration.current
+    var isLandscape by remember { mutableStateOf(false) }
+
+    when (configuration.orientation) {
+        Configuration.ORIENTATION_PORTRAIT -> {
+            isLandscape = false
+
+            Column(
+                modifier = Modifier
+                    .padding(30.dp)
+            ) {
+                TopScreen(
+                    converterList,
+                    converterViewModel.selectedConversion,
+                    converterViewModel.inputText,
+                    converterViewModel.typedValue,
+                    isLandscape
+                ) { message1, message2 ->
+                    converterViewModel.addResult(message1, message2)
+                }
+                SpacerComposable(20)
+                HistoryScreen(
+                    historyList,
+                    { item -> converterViewModel.removeResult(item) },
+                    { converterViewModel.clearAllResults() }
+                )
+            }
         }
-        SpacerComposable(20)
-        HistoryScreen(
-            historyList,
-            { item -> converterViewModel.removeResult(item) },
-            { converterViewModel.clearAllResults() }
-        )
+        Configuration.ORIENTATION_LANDSCAPE -> {
+            isLandscape = true
+
+            Row(
+                modifier = Modifier
+                    .padding(30.dp)
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                TopScreen(
+                    converterList,
+                    converterViewModel.selectedConversion,
+                    converterViewModel.inputText,
+                    converterViewModel.typedValue,
+                    isLandscape
+                ) { message1, message2 ->
+                    converterViewModel.addResult(message1, message2)
+                }
+                Spacer(
+                    modifier = modifier.width(10.dp)
+                )
+                HistoryScreen(
+                    historyList,
+                    { item -> converterViewModel.removeResult(item) },
+                    { converterViewModel.clearAllResults() }
+                )
+            }
+        }
+
+
     }
+
 }
 
 @Composable

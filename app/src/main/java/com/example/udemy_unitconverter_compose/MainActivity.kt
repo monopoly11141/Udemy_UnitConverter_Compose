@@ -11,15 +11,16 @@ import com.example.udemy_unitconverter_compose.compose.BaseScreen
 import com.example.udemy_unitconverter_compose.data.ConverterDatabase
 import com.example.udemy_unitconverter_compose.data.ConverterRepositoryImpl
 import com.example.udemy_unitconverter_compose.ui.theme.Udemy_UnitConverter_ComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var converterViewModelFactory : ConverterViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val converterDao = ConverterDatabase.getInstance(application).converterDao
-        val converterRepository = ConverterRepositoryImpl(converterDao)
-        val converterViewModelFactory = ConverterViewModelFactory(converterRepository)
-
 
         setContent {
             Udemy_UnitConverter_ComposeTheme {

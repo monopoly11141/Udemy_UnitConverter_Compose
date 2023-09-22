@@ -1,5 +1,7 @@
 package com.example.udemy_unitconverter_compose
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.udemy_unitconverter_compose.data.Conversion
@@ -11,6 +13,10 @@ import kotlinx.coroutines.launch
 class ConverterViewModel(
     private val converterRepository: ConverterRepository
 ) : ViewModel() {
+
+    val selectedConversion: MutableState<Conversion?> = mutableStateOf(null)
+    val inputText: MutableState<String> = mutableStateOf("")
+    val typedValue: MutableState<String> = mutableStateOf("0.0")
 
     fun getConversions() = listOf(
         Conversion(1, "Pounds To Kilograms", "lbs", "kg", 0.453592),
